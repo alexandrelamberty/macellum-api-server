@@ -10,6 +10,6 @@ func CategoryRouter(app fiber.Router, service service.CategoryService) {
 	app.Get("/categories", handlers.GetAllCategories(service))
 	app.Post("/categories", handlers.CreateCategory(service))
 	app.Get("/categories/:id", handlers.GetCategoryByID(service))
-	app.Post("/categories/:id", handlers.UpdateCategory(service))
+	app.Patch("/categories/:id", handlers.UpdateCategory(service))
 	app.Delete("/categories/:id", handlers.DeleteCategory(service))
 }

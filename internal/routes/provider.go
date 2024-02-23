@@ -10,6 +10,6 @@ func ProviderRouter(app fiber.Router, service service.ProviderService) {
 	app.Get("/providers", handlers.GetAllProviders(service))
 	app.Post("/providers", handlers.CreateProvider(service))
 	app.Get("/providers/:id", handlers.GetProviderByID(service))
-	app.Post("/providers/:id", handlers.UpdateProvider(service))
+	app.Patch("/providers/:id", handlers.UpdateProvider(service))
 	app.Delete("/providers/:id", handlers.DeleteProvider(service))
 }

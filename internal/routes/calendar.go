@@ -7,9 +7,10 @@ import (
 )
 
 func CalendarRouter(app fiber.Router, service service.CalendarService) {
-	app.Get("/calendars", handlers.GetAllCalendars(service))
-	app.Post("/calendars", handlers.CreateCalendar(service))
-	app.Get("/calendars/:id", handlers.GetCalendarByID(service))
-	app.Post("/calendars/:id", handlers.UpdateCalendar(service))
-	app.Delete("/calendars/:id", handlers.DeleteCalendar(service))
+	calendar := app.Group("/calendars")
+	calendar.Get("/", handlers.GetAllCalendars(service))
+	calendar.Post("/", handlers.CreateCalendar(service))
+	calendar.Get("/:id", handlers.GetCalendarByID(service))
+	calendar.Patch("/:id", handlers.UpdateCalendar(service))
+	calendar.Delete("/:id", handlers.DeleteCalendar(service))
 }
