@@ -1,15 +1,16 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/alexandrelamberty/macellum-api-server/internal/requests"
 	"github.com/alexandrelamberty/macellum-api-server/internal/responses"
 	"github.com/alexandrelamberty/macellum-api-server/pkg/domain"
 	"github.com/alexandrelamberty/macellum-api-server/pkg/service"
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetUsers is a function to get all services from the database
 func GetAllUsers(service service.UserService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		result, err := service.GetAllUsers()
@@ -21,25 +22,40 @@ func GetAllUsers(service service.UserService) fiber.Handler {
 	}
 }
 
-func CreateUser(service service.UserService) fiber.Handler {
+func InviteUser(service service.UserService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		var user domain.User
+		var request *requests.InviteUser
 		// Parse the request body
-		err := c.BodyParser(&user)
+		err := c.BodyParser(&request)
+		if err != nil {
+			fmt.Println("error body")
+			c.Status(http.StatusBadRequest)
+			return c.JSON(responses.UserErrorResponse(err.Error()))
+		}
+
+		// Validate the request body
+		err = validate.Struct(request)
 		if err != nil {
 			c.Status(http.StatusBadRequest)
 			return c.JSON(responses.UserErrorResponse(err.Error()))
 		}
 
+		// User
+		user := &domain.User{
+			FirstName: request.FirstName,
+			LastName:  request.LastName,
+			Email:     request.Email,
+		}
+
 		// Create the user
-		err = service.CreateUser(&user)
+		err = service.InviteUser(user)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
 			return c.JSON(responses.UserErrorResponse(err.Error()))
 		}
 
 		// Return the created user
-		return c.JSON(responses.GetUserSuccessResponse(&user))
+		return c.JSON(responses.GetUserSuccessResponse(user))
 	}
 }
 

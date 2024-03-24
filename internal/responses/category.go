@@ -2,12 +2,8 @@ package responses
 
 import "github.com/alexandrelamberty/macellum-api-server/pkg/domain"
 
-func ListCategoriesSuccessResponse(data *[]domain.Category) ResponseHTTP {
-	return ResponseHTTP{
-		Success: true,
-		Message: "Categories successfully listed",
-		Data:    data,
-	}
+func ListCategoriesSuccessResponse(data *[]domain.Category) *[]domain.Category {
+	return data
 }
 
 func CreateCategorySuccessResponse(data *domain.Category) ResponseHTTP {

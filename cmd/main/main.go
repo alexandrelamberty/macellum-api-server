@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/alexandrelamberty/macellum-api-server/internal/routes"
+	"github.com/alexandrelamberty/macellum-api-server/internal/database"
+	"github.com/alexandrelamberty/macellum-api-server/internal/router"
 	"github.com/alexandrelamberty/macellum-api-server/pkg/infrastructure"
 	"github.com/alexandrelamberty/macellum-api-server/pkg/repository"
 	"github.com/alexandrelamberty/macellum-api-server/pkg/service"
@@ -14,25 +15,22 @@ import (
 
 // Application entrypoint
 func main() {
-	// Environments variables
-	// With Docker environment variables are loaded into the container.
-	// With Go we load the local .env file
-	// _, exist := os.LookupEnv("DATABASE_URI")
-	// if !exist {
-	// 	err := godotenv.Load(".env")
-	// 	if err != nil {
-	// 		log.Fatalf("Error loading .env file")
-	// 	}
-	// }
 
 	// Set up database
 	infrastructure.SetupDatabase()
+
+	// Seed database
+	database.SeedDatabase(infrastructure.DB)
 
 	// Fiber Application
 	app := fiber.New()
 
 	// Cors
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "*",
+		AllowCredentials: false,
+		AllowHeaders:     "Origin, Content-Type, Accept",
+	}))
 
 	// Logging
 	app.Use("/", logger.New(logger.Config{
@@ -42,10 +40,14 @@ func main() {
 	}))
 
 	// Repositories
-
 	calendarRepo := repository.NewCalendarRepository(infrastructure.DB)
 	cartRepo := repository.NewCartRepository(infrastructure.DB)
 	categoryRepo := repository.NewCategoryRepository(infrastructure.DB)
+	groupRepo := repository.NewGroupRepository(infrastructure.DB)
+	incomeRepo := repository.NewIncomeRepository(infrastructure.DB)
+	locationRepo := repository.NewLocationRepository(infrastructure.DB)
+	limitRepo := repository.NewLimitRepository(infrastructure.DB)
+	paymentMethodRepo := repository.NewPaymentMethodRepository(infrastructure.DB)
 	customerRepo := repository.NewCustomerRepository(infrastructure.DB)
 	orderRepo := repository.NewOrderRepository(infrastructure.DB)
 	productRepo := repository.NewProductRepository(infrastructure.DB)
@@ -53,56 +55,37 @@ func main() {
 	userRepo := repository.NewUserRepository(infrastructure.DB)
 
 	// Services
+	authService := service.NewAuthService(userRepo)
 	calendarService := service.NewCalendarService(calendarRepo)
 	cartService := service.NewCartService(cartRepo)
 	categoryService := service.NewCategoryService(categoryRepo)
+	groupService := service.NewGroupService(groupRepo)
+	incomeService := service.NewIncomeService(incomeRepo)
+	locationService := service.NewLocationService(locationRepo)
+	limitService := service.NewLimitService(limitRepo)
+	paymentMethodService := service.NewPaymentMethodService(paymentMethodRepo)
 	customerService := service.NewCustomerService(customerRepo)
 	orderService := service.NewOrderService(orderRepo)
 	productService := service.NewProductService(productRepo)
 	providerService := service.NewProviderService(providerRepo)
 	userService := service.NewUserService(userRepo)
 
-	// app.Post("/users", func(c *fiber.Ctx) error {
-	// 	var user domain.User
-	// 	if err := c.BodyParser(&user); err != nil {
-	// 		return err
-	// 	}
-
-	// 	if err := userService.CreateUser(&user); err != nil {
-	// 		return c.Status(400).JSON(fiber.Map{"error": err.Error()})
-	// 	}
-
-	// 	return c.JSON(user)
-	// })
-
-	// app.Get("/users/:id", func(c *fiber.Ctx) error {
-	// 	id := c.Params("id")
-	// 	user, err := userService.GetUserByID(id)
-	// 	if err != nil {
-	// 		return c.Status(404).JSON(fiber.Map{"error": "User not found"})
-	// 	}
-
-	// 	return c.JSON(user)
-	// })
-
-	// app.Get("/users", func(c *fiber.Ctx) error {
-	// 	users, err := userService.ListUsers()
-	// 	if err != nil {
-	// 		return c.Status(400).JSON(fiber.Map{"error": err.Error()})
-	// 	}
-	// 	return c.JSON(users)
-	// })
-
 	// Routes
 	api := app.Group("/")
-	routes.CalendarRouter(api, calendarService)
-	routes.CartRouter(api, cartService)
-	routes.CategoryRouter(api, categoryService)
-	routes.CustomerRouter(api, customerService)
-	routes.OrderRouter(api, orderService)
-	routes.ProductRouter(api, productService)
-	routes.ProviderRouter(api, providerService)
-	routes.UserRouter(api, userService)
+	router.AuthRouter(api, authService)
+	router.CalendarRouter(api, calendarService)
+	router.CartRouter(api, cartService)
+	router.CategoryRouter(api, categoryService)
+	router.GroupRouter(api, groupService)
+	router.IncomeRouter(api, incomeService)
+	router.LocationRouter(api, locationService)
+	router.LimitRouter(api, limitService)
+	router.PaymentMethodRouter(api, paymentMethodService)
+	router.CustomerRouter(api, customerService)
+	router.OrderRouter(api, orderService)
+	router.ProductRouter(api, productService)
+	router.ProviderRouter(api, providerService)
+	router.UserRouter(api, userService)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Macellum API v0.0.1")

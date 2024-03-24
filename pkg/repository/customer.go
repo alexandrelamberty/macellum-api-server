@@ -27,39 +27,39 @@ func NewCustomerRepository(database *gorm.DB) CustomerRepository {
 	}
 }
 
-func (ur *customerRepository) FindAll() (*[]domain.Customer, error) {
+func (repository *customerRepository) FindAll() (*[]domain.Customer, error) {
 	var customers []domain.Customer
-	err := ur.database.Find(&customers).Error
+	err := repository.database.Find(&customers).Error
 	return &customers, err
 }
 
-func (ur *customerRepository) Create(customer *domain.Customer) error {
-	return ur.database.Create(customer).Error
+func (repository *customerRepository) Create(customer *domain.Customer) error {
+	return repository.database.Create(customer).Error
 }
 
-func (ur *customerRepository) Update(customer *domain.Customer) error {
-	return ur.database.Save(&customer).Error
+func (repository *customerRepository) Update(customer *domain.Customer) error {
+	return repository.database.Save(&customer).Error
 }
 
-func (r *customerRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Customer{}, id).Error
+func (repository *customerRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Customer{}, id).Error
 }
 
-func (r *customerRepository) FindByID(id uint) (*domain.Customer, error) {
+func (repository *customerRepository) FindByID(id uint) (*domain.Customer, error) {
 	var customer domain.Customer
-	err := r.database.First(&customer, id).Error
+	err := repository.database.First(&customer, id).Error
 	fmt.Println(customer)
 	return &customer, err
 }
 
-func (r *customerRepository) FindByEmail(email string) (*domain.Customer, error) {
+func (repository *customerRepository) FindByEmail(email string) (*domain.Customer, error) {
 	var customer domain.Customer
-	err := r.database.Where("email = ?", email).First(&customer).Error
+	err := repository.database.Where("email = ?", email).First(&customer).Error
 	return &customer, err
 }
 
-func (r *customerRepository) FindByName(name string) (*domain.Customer, error) {
+func (repository *customerRepository) FindByName(name string) (*domain.Customer, error) {
 	var customer domain.Customer
-	err := r.database.Where("name = ?", name).First(&customer).Error
+	err := repository.database.Where("name = ?", name).First(&customer).Error
 	return &customer, err
 }

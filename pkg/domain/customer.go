@@ -1,9 +1,7 @@
 package domain
 
-import "gorm.io/gorm"
-
 type Customer struct {
-	gorm.Model
+	Entity
 	Code      string `gorm:"unique"`
 	FirstName string
 	LastName  string

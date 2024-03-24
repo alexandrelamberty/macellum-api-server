@@ -24,32 +24,33 @@ func NewProductRepository(database *gorm.DB) ProductRepository {
 	}
 }
 
-func (ur *productRepository) FindAll() (*[]domain.Product, error) {
+func (repository *productRepository) FindAll() (*[]domain.Product, error) {
 	var products []domain.Product
-	err := ur.database.Find(&products).Error
+	err := repository.database.Preload("Provider").
+		Preload("Category").Preload("Group").Find(&products).Error
 	return &products, err
 }
 
-func (ur *productRepository) Create(product *domain.Product) error {
-	return ur.database.Create(product).Error
+func (repository *productRepository) Create(product *domain.Product) error {
+	return repository.database.Create(product).Error
 }
 
-func (ur *productRepository) Update(product *domain.Product) error {
-	return ur.database.Save(&product).Error
+func (repository *productRepository) Update(product *domain.Product) error {
+	return repository.database.Save(&product).Error
 }
 
-func (r *productRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Product{}, id).Error
+func (repository *productRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Product{}, id).Error
 }
 
-func (r *productRepository) FindByID(id uint) (*domain.Product, error) {
+func (repository *productRepository) FindByID(id uint) (*domain.Product, error) {
 	var product domain.Product
-	err := r.database.First(&product, id).Error
+	err := repository.database.First(&product, id).Error
 	return &product, err
 }
 
-func (r *productRepository) FindBySKU(sku string) (*domain.Product, error) {
+func (repository *productRepository) FindBySKU(sku string) (*domain.Product, error) {
 	var product domain.Product
-	err := r.database.Model(domain.Product{}).Where("sku = ?", sku).First(&product).Error
+	err := repository.database.Model(domain.Product{}).Where("sku = ?", sku).First(&product).Error
 	return &product, err
 }

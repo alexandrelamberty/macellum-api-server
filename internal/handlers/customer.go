@@ -12,6 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// FIXME
 var validate *validator.Validate
 
 func init() {

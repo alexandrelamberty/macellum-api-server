@@ -13,7 +13,7 @@ type userService struct {
 
 type UserService interface {
 	GetAllUsers() (*[]domain.User, error)
-	CreateUser(*domain.User) error
+	InviteUser(*domain.User) error
 	UpdateUser(user *domain.User) error
 	DeleteUser(id uint) error
 	GetUserByID(id uint) (*domain.User, error)
@@ -31,13 +31,9 @@ func (s *userService) GetAllUsers() (*[]domain.User, error) {
 	return s.repository.FindAll()
 }
 
-func (s *userService) CreateUser(user *domain.User) error {
-	// Check if username or email already exists
-	existingUser, err := s.repository.FindByUsername(user.Username)
-	if err == nil && existingUser != nil {
-		return errors.New("username already exists")
-	}
-	existingUser, err = s.repository.FindByEmail(user.Email)
+func (s *userService) InviteUser(user *domain.User) error {
+	// Check if email already exists
+	existingUser, err := s.repository.FindByEmail(user.Email)
 	if err == nil && existingUser != nil {
 		return errors.New("email already exists")
 	}

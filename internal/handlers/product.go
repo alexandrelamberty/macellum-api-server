@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetProducts is a function to get all services from the database
 func GetAllProducts(service service.ProductService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		result, err := service.GetAllProducts()
@@ -17,7 +16,7 @@ func GetAllProducts(service service.ProductService) fiber.Handler {
 			c.Status(http.StatusInternalServerError)
 			return c.JSON(responses.ProductErrorResponse(err.Error()))
 		}
-		return c.JSON(responses.ListProductsSuccessResponse(result))
+		return c.JSON(result)
 	}
 }
 

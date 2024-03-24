@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetProviders is a function to get all services from the database
 func GetAllProviders(service service.ProviderService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		result, err := service.GetAllProviders()

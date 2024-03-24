@@ -23,26 +23,26 @@ func NewCartRepository(database *gorm.DB) CartRepository {
 	}
 }
 
-func (ur *cartRepository) FindAll() (*[]domain.Cart, error) {
+func (repository *cartRepository) FindAll() (*[]domain.Cart, error) {
 	var carts []domain.Cart
-	err := ur.database.Find(&carts).Error
+	err := repository.database.Find(&carts).Error
 	return &carts, err
 }
 
-func (ur *cartRepository) Create(cart *domain.Cart) error {
-	return ur.database.Create(cart).Error
+func (repository *cartRepository) Create(cart *domain.Cart) error {
+	return repository.database.Create(cart).Error
 }
 
-func (ur *cartRepository) Update(cart *domain.Cart) error {
-	return ur.database.Save(&cart).Error
+func (repository *cartRepository) Update(cart *domain.Cart) error {
+	return repository.database.Save(&cart).Error
 }
 
-func (r *cartRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Cart{}, id).Error
+func (repository *cartRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Cart{}, id).Error
 }
 
-func (r *cartRepository) FindByID(id uint) (*domain.Cart, error) {
+func (repository *cartRepository) FindByID(id uint) (*domain.Cart, error) {
 	var cart domain.Cart
-	err := r.database.First(&cart, id).Error
+	err := repository.database.First(&cart, id).Error
 	return &cart, err
 }

@@ -23,26 +23,26 @@ func NewOrderRepository(database *gorm.DB) OrderRepository {
 	}
 }
 
-func (ur *orderRepository) FindAll() (*[]domain.Order, error) {
+func (repository *orderRepository) FindAll() (*[]domain.Order, error) {
 	var orders []domain.Order
-	err := ur.database.Find(&orders).Error
+	err := repository.database.Find(&orders).Error
 	return &orders, err
 }
 
-func (ur *orderRepository) Create(order *domain.Order) error {
-	return ur.database.Create(order).Error
+func (repository *orderRepository) Create(order *domain.Order) error {
+	return repository.database.Create(order).Error
 }
 
-func (ur *orderRepository) Update(order *domain.Order) error {
-	return ur.database.Save(&order).Error
+func (repository *orderRepository) Update(order *domain.Order) error {
+	return repository.database.Save(&order).Error
 }
 
-func (r *orderRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Order{}, id).Error
+func (repository *orderRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Order{}, id).Error
 }
 
-func (r *orderRepository) FindByID(id uint) (*domain.Order, error) {
+func (repository *orderRepository) FindByID(id uint) (*domain.Order, error) {
 	var order domain.Order
-	err := r.database.First(&order, id).Error
+	err := repository.database.First(&order, id).Error
 	return &order, err
 }

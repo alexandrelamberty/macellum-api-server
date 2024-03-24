@@ -24,32 +24,32 @@ func NewCalendarRepository(database *gorm.DB) CalendarRepository {
 	}
 }
 
-func (ur *calendarRepository) FindAll() (*[]domain.Calendar, error) {
+func (repository *calendarRepository) FindAll() (*[]domain.Calendar, error) {
 	var calendars []domain.Calendar
-	err := ur.database.Find(&calendars).Error
+	err := repository.database.Find(&calendars).Error
 	return &calendars, err
 }
 
-func (ur *calendarRepository) Create(calendar *domain.Calendar) error {
-	return ur.database.Create(calendar).Error
+func (repository *calendarRepository) Create(calendar *domain.Calendar) error {
+	return repository.database.Create(calendar).Error
 }
 
-func (ur *calendarRepository) Update(calendar *domain.Calendar) error {
-	return ur.database.Save(&calendar).Error
+func (repository *calendarRepository) Update(calendar *domain.Calendar) error {
+	return repository.database.Save(&calendar).Error
 }
 
-func (r *calendarRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Calendar{}, id).Error
+func (repository *calendarRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Calendar{}, id).Error
 }
 
-func (r *calendarRepository) FindByID(id uint) (*domain.Calendar, error) {
+func (repository *calendarRepository) FindByID(id uint) (*domain.Calendar, error) {
 	var calendar domain.Calendar
-	err := r.database.First(&calendar, id).Error
+	err := repository.database.First(&calendar, id).Error
 	return &calendar, err
 }
 
-func (r *calendarRepository) FindByName(name string) (*domain.Calendar, error) {
+func (repository *calendarRepository) FindByName(name string) (*domain.Calendar, error) {
 	var calendar domain.Calendar
-	err := r.database.Model(domain.User{}).Where("name = ?", name).First(&calendar).Error
+	err := repository.database.Model(domain.User{}).Where("name = ?", name).First(&calendar).Error
 	return &calendar, err
 }

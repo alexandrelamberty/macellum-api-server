@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	"github.com/alexandrelamberty/macellum-api-server/internal/handlers"
@@ -7,7 +7,7 @@ import (
 )
 
 func AuthRouter(app fiber.Router, service service.AuthService) {
-	calendar := app.Group("/calendars")
-	calendar.Post("/login", handlers.CreateCalendar(service))
-
+	auth := app.Group("/auth")
+	auth.Post("/register", handlers.RegisterUser(service))
+	auth.Post("/login", handlers.LoginUser(service))
 }

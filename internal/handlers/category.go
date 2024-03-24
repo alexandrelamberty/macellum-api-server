@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetCategories is a function to get all services from the database
 func GetAllCategories(service service.CategoryService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		result, err := service.GetAllCategories()
@@ -54,13 +53,13 @@ func GetCategoryByID(service service.CategoryService) fiber.Handler {
 		uintID := uint(id)
 
 		// Retrieve the cart from the service based on the parsed 'id'.Verify if the cart exists.
-		cart, err := service.GetCategoryByID(uintID)
+		category, err := service.GetCategoryByID(uintID)
 		if err != nil {
 			c.Status(http.StatusBadRequest)
 			return c.JSON(responses.CategoryErrorResponse(err.Error()))
 		}
 
-		return c.JSON(responses.GetCategorySuccessResponse(cart))
+		return c.JSON(category)
 	}
 }
 

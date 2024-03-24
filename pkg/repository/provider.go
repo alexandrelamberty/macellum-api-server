@@ -24,32 +24,32 @@ func NewProviderRepository(database *gorm.DB) ProviderRepository {
 	}
 }
 
-func (ur *providerRepository) FindAll() (*[]domain.Provider, error) {
+func (repository *providerRepository) FindAll() (*[]domain.Provider, error) {
 	var providers []domain.Provider
-	err := ur.database.Find(&providers).Error
+	err := repository.database.Find(&providers).Error
 	return &providers, err
 }
 
-func (ur *providerRepository) Create(provider *domain.Provider) error {
-	return ur.database.Create(provider).Error
+func (repository *providerRepository) Create(provider *domain.Provider) error {
+	return repository.database.Create(provider).Error
 }
 
-func (ur *providerRepository) Update(provider *domain.Provider) error {
-	return ur.database.Save(&provider).Error
+func (repository *providerRepository) Update(provider *domain.Provider) error {
+	return repository.database.Save(&provider).Error
 }
 
-func (r *providerRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Provider{}, id).Error
+func (repository *providerRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Provider{}, id).Error
 }
 
-func (r *providerRepository) FindByID(id uint) (*domain.Provider, error) {
+func (repository *providerRepository) FindByID(id uint) (*domain.Provider, error) {
 	var provider domain.Provider
-	err := r.database.First(&provider, id).Error
+	err := repository.database.First(&provider, id).Error
 	return &provider, err
 }
 
-func (r *providerRepository) FindByName(name string) (*domain.Provider, error) {
+func (repository *providerRepository) FindByName(name string) (*domain.Provider, error) {
 	var provider domain.Provider
-	err := r.database.First(&provider, name).Error
+	err := repository.database.First(&provider, name).Error
 	return &provider, err
 }

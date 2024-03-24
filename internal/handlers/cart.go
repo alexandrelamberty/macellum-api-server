@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetCarts is a function to get all services from the database
 func GetAllCarts(service service.CartService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		result, err := service.GetAllCarts()

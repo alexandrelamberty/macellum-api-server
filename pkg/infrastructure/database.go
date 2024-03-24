@@ -19,17 +19,36 @@ func SetupDatabase() {
 
 	// Migrate the schemas
 	db.AutoMigrate(
-		&domain.Calendar{},
 		&domain.Category{},
+		&domain.Group{},
+		&domain.Limit{},
+		&domain.PaymentMethod{},
+		&domain.Income{},
+		&domain.Location{},
+		&domain.User{},
 		&domain.Customer{},
-		&domain.Event{},
+		&domain.Provider{},
+		&domain.Product{},
+		&domain.Price{},
 		&domain.Cart{},
+		&domain.CartProduct{},
 		&domain.Order{},
 		&domain.OrderProduct{},
-		&domain.Product{},
-		&domain.Provider{},
-		&domain.ProductProvider{},
-		&domain.User{})
+		&domain.Calendar{},
+		&domain.Event{},
+	)
 
+	// Setup join table
+	err = db.SetupJoinTable(&domain.Cart{}, "Products", &domain.CartProduct{})
+	if err != nil {
+		panic("Failed to setup join table")
+	}
+
+	err = db.SetupJoinTable(&domain.Order{}, "Products", &domain.OrderProduct{})
+	if err != nil {
+		panic("Failed to setup join table")
+	}
+
+	// Set database
 	DB = db
 }

@@ -23,26 +23,26 @@ func NewCategoryRepository(database *gorm.DB) CategoryRepository {
 	}
 }
 
-func (ur *categoryRepository) FindAll() (*[]domain.Category, error) {
+func (repository *categoryRepository) FindAll() (*[]domain.Category, error) {
 	var categories []domain.Category
-	err := ur.database.Find(&categories).Error
+	err := repository.database.Find(&categories).Error
 	return &categories, err
 }
 
-func (ur *categoryRepository) Create(category *domain.Category) error {
-	return ur.database.Create(category).Error
+func (repository *categoryRepository) Create(category *domain.Category) error {
+	return repository.database.Create(category).Error
 }
 
-func (ur *categoryRepository) Update(category *domain.Category) error {
-	return ur.database.Save(&category).Error
+func (repository *categoryRepository) Update(category *domain.Category) error {
+	return repository.database.Save(&category).Error
 }
 
-func (r *categoryRepository) Delete(id uint) error {
-	return r.database.Delete(&domain.Category{}, id).Error
+func (repository *categoryRepository) Delete(id uint) error {
+	return repository.database.Delete(&domain.Category{}, id).Error
 }
 
-func (r *categoryRepository) FindByID(id uint) (*domain.Category, error) {
+func (repository *categoryRepository) FindByID(id uint) (*domain.Category, error) {
 	var category domain.Category
-	err := r.database.First(&category, id).Error
+	err := repository.database.First(&category, id).Error
 	return &category, err
 }

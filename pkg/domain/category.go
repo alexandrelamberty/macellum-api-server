@@ -1,8 +1,6 @@
 package domain
 
-import "gorm.io/gorm"
-
 type Category struct {
-	gorm.Model
+	Entity
 	Name string `gorm:"unique" json:"name"`
 }

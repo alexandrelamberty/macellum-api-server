@@ -9,7 +9,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// GetOrders is a function to get all services from the database
 func GetAllOrders(service service.OrderService) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		result, err := service.GetAllOrders()

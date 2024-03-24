@@ -1,4 +1,4 @@
-package routes
+package router
 
 import (
 	"github.com/alexandrelamberty/macellum-api-server/internal/handlers"

@@ -32,7 +32,7 @@ func (s *productService) GetAllProducts() (*[]domain.Product, error) {
 
 func (s *productService) CreateProduct(product *domain.Product) error {
 	// Check if product SKU already exists
-	existingProduct, err := s.repository.FindBySKU(product.SKU)
+	existingProduct, err := s.repository.FindBySKU(product.Code)
 	if err == nil && existingProduct != nil {
 		return errors.New("productname already exists")
 	}
