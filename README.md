@@ -1,3 +1,5 @@
+[![Go Compile and Test](https://github.com/alexandrelamberty/macellum-api-server/actions/workflows/go.yaml/badge.svg?branch=master)](https://github.com/alexandrelamberty/macellum-api-server/actions/workflows/go.yaml)
+
 # Macellum API Server Application
 
 This project contains the source code for a Golang implementation of the
