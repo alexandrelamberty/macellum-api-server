@@ -46,15 +46,15 @@ func SeedDatabase(db *gorm.DB) {
 	db.Create(&paymentMethods)
 
 	var limits = []domain.Limit{
-		{Name: "Individual", Peoples: 1, Days: 30, Amount: 10},
-		{Name: "2", Peoples: 2, Days: 30, Amount: 10},
-		{Name: "3", Peoples: 3, Days: 30, Amount: 10},
-		{Name: "4", Peoples: 4, Days: 30, Amount: 10},
-		{Name: "5", Peoples: 5, Days: 30, Amount: 10},
-		{Name: "6", Peoples: 6, Days: 30, Amount: 10},
-		{Name: "7", Peoples: 7, Days: 30, Amount: 10},
-		{Name: "8", Peoples: 8, Days: 30, Amount: 10},
-		{Name: "9", Peoples: 9, Days: 30, Amount: 10},
+		{Name: "Individual", Peoples: 1, Duration: 30, Amount: 10},
+		{Name: "2", Peoples: 2, Duration: 30, Amount: 10},
+		{Name: "3", Peoples: 3, Duration: 30, Amount: 10},
+		{Name: "4", Peoples: 4, Duration: 30, Amount: 10},
+		{Name: "5", Peoples: 5, Duration: 30, Amount: 10},
+		{Name: "6", Peoples: 6, Duration: 30, Amount: 10},
+		{Name: "7", Peoples: 7, Duration: 30, Amount: 10},
+		{Name: "8", Peoples: 8, Duration: 30, Amount: 10},
+		{Name: "9", Peoples: 9, Duration: 30, Amount: 10},
 	}
 	db.Create(&limits)
 
