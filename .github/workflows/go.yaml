@@ -3,11 +3,11 @@ name: Go Compile and Test
 on:
   push:
     branches:
-      - "release/**"
-      - "feature/**"
-      - "hotfix/**"
+      - "master"
+      - "develop"
   pull_request:
-    branches: ["master", "develop"]
+    branches:
+      - "*"
 
 jobs:
   build:
